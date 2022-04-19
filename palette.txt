@@ -1,0 +1,8 @@
+Sand: #fbefc0
+Main: #f6bd08
+Light Brown: #a66904
+Dark Brown: #875004
+Light Yellow: #fbd660
+Semi Green: #ac9037
+Yellow: #fcdc3c
+Gray: #747464
