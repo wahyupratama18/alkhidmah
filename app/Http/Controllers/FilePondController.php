@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Temp;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\{DB, Storage};
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FilePondController extends Controller
 {
@@ -21,5 +22,14 @@ class FilePondController extends Controller
             ])->id;
             
         });
+    }
+
+    public function show(Temp $pond): BinaryFileResponse
+    {
+        if (Storage::exists($pond->path)) {
+            return response()->file(storage_path('app/'.$pond->path));
+        }
+
+        abort(404);
     }
 }

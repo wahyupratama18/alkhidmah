@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Http\Requests\{StoreCategoryRequest, UpdateCategoryRequest};
+use App\Models\Temp;
 use Illuminate\Http\RedirectResponse;
 use Inertia\{Inertia, Response};
 
@@ -47,7 +48,10 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request): RedirectResponse
     {
-        Category::create($request);
+        Category::create(
+            $request->safe(['name', 'category_id', 'description']) +
+            ['image_path' => Temp::find($request->image)->movePublicly('category')]
+        );
 
         return redirect()->route('categories.index');
     }
@@ -94,6 +98,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return redirect()->route('categories.index');
     }
 }

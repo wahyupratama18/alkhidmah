@@ -9,6 +9,8 @@ import Textarea from '@/Jetstream/Textarea.vue';
 import StoreLayout from '@/Layouts/StoreLayout.vue';
 import vSelect from 'vue-select';
 import vueFilePond from 'vue-filepond';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 
 defineProps({
     categories: Array
@@ -23,13 +25,12 @@ const form = useForm({
 })
 
 const submitted = () => {
-    console.log(form)
+    form.post(route('categories.store'), {
+        onSuccess: () => {
+            // window.location.
+        }
+    })
 }
-
-import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
-import axios from 'axios';
-import route from '../../../../../vendor/tightenco/ziggy/src/js';
 
 const FilePond = vueFilePond(
     FilePondPluginFileValidateType,
@@ -39,17 +40,19 @@ const FilePond = vueFilePond(
 const server = {
     process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
         const cancel = axios.CancelToken.source(),
-            form = new FormData()
+            upload = new FormData()
 
-        form.append('file', file, file.name)
+        upload.append('file', file, file.name)
 
-        axios.post(route('pond.store'), form, {
+        axios.post(route('pond.store'), upload, {
             cancelToken: cancel.token,
             onUploadProgress: e => {
                 progress(e.lengthComputable, e.loaded, e.total)
             }
         }).then(data => {
-            load(data.responseText)
+            load(data.data)
+
+            form.image = data.data
         }).catch(err => {
             error('Failed')
         })
@@ -64,6 +67,7 @@ const server = {
             },
         };
     },
+    load: 'pond/'
 }
 
 </script>

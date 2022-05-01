@@ -1,5 +1,6 @@
 <script setup>
 import { Link } from '@inertiajs/inertia-vue3';
+import { Inertia } from '@inertiajs/inertia';
 import JetButton from '@/Jetstream/Button.vue';
 import StoreLayout from '@/Layouts/StoreLayout.vue';
 import CategoryCard from '@/Jetstream/CategoryCard.vue';
@@ -16,7 +17,8 @@ const remove = (id, cat) => {
         reverseButtons: true
     }).then(res => {
         if (res.value) {
-            console.log('deleted')
+            Inertia.delete(route('categories.destroy', {category: id}))
+            // console.log('deleted')
         }
     })
 }

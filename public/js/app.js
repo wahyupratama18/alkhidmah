@@ -22996,11 +22996,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var filepond_plugin_file_validate_type__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(filepond_plugin_file_validate_type__WEBPACK_IMPORTED_MODULE_10__);
 /* harmony import */ var filepond_plugin_image_preview__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! filepond-plugin-image-preview */ "./node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js");
 /* harmony import */ var filepond_plugin_image_preview__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(filepond_plugin_image_preview__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_12__);
-/* harmony import */ var _vendor_tightenco_ziggy_src_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../../../../vendor/tightenco/ziggy/src/js */ "./vendor/tightenco/ziggy/src/js/index.js");
-
-
 
 
 
@@ -23029,22 +23024,26 @@ __webpack_require__.r(__webpack_exports__);
     });
 
     var submitted = function submitted() {
-      console.log(form);
+      form.post(route('categories.store'), {
+        onSuccess: function onSuccess() {// window.location.
+        }
+      });
     };
 
     var FilePond = vue_filepond__WEBPACK_IMPORTED_MODULE_9___default()((filepond_plugin_file_validate_type__WEBPACK_IMPORTED_MODULE_10___default()), (filepond_plugin_image_preview__WEBPACK_IMPORTED_MODULE_11___default()));
     var server = {
       process: function process(fieldName, file, metadata, load, error, progress, _abort, transfer, options) {
-        var cancel = axios__WEBPACK_IMPORTED_MODULE_12___default().CancelToken.source(),
-            form = new FormData();
-        form.append('file', file, file.name);
-        axios__WEBPACK_IMPORTED_MODULE_12___default().post((0,_vendor_tightenco_ziggy_src_js__WEBPACK_IMPORTED_MODULE_13__["default"])('pond.store'), form, {
+        var cancel = axios.CancelToken.source(),
+            upload = new FormData();
+        upload.append('file', file, file.name);
+        axios.post(route('pond.store'), upload, {
           cancelToken: cancel.token,
           onUploadProgress: function onUploadProgress(e) {
             progress(e.lengthComputable, e.loaded, e.total);
           }
         }).then(function (data) {
-          load(data.responseText);
+          load(data.data);
+          form.image = data.data;
         })["catch"](function (err) {
           error('Failed');
         }); // Should expose an abort method so the request can be cancelled
@@ -23057,7 +23056,8 @@ __webpack_require__.r(__webpack_exports__);
             _abort();
           }
         };
-      }
+      },
+      load: 'pond/'
     };
     var __returned__ = {
       form: form,
@@ -23076,9 +23076,7 @@ __webpack_require__.r(__webpack_exports__);
       vSelect: (vue_select__WEBPACK_IMPORTED_MODULE_8___default()),
       vueFilePond: (vue_filepond__WEBPACK_IMPORTED_MODULE_9___default()),
       FilePondPluginFileValidateType: (filepond_plugin_file_validate_type__WEBPACK_IMPORTED_MODULE_10___default()),
-      FilePondPluginImagePreview: (filepond_plugin_image_preview__WEBPACK_IMPORTED_MODULE_11___default()),
-      axios: (axios__WEBPACK_IMPORTED_MODULE_12___default()),
-      route: _vendor_tightenco_ziggy_src_js__WEBPACK_IMPORTED_MODULE_13__["default"]
+      FilePondPluginImagePreview: (filepond_plugin_image_preview__WEBPACK_IMPORTED_MODULE_11___default())
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -23102,9 +23100,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
-/* harmony import */ var _Jetstream_Button_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Jetstream/Button.vue */ "./resources/js/Jetstream/Button.vue");
-/* harmony import */ var _Layouts_StoreLayout_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Layouts/StoreLayout.vue */ "./resources/js/Layouts/StoreLayout.vue");
-/* harmony import */ var _Jetstream_CategoryCard_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/Jetstream/CategoryCard.vue */ "./resources/js/Jetstream/CategoryCard.vue");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+/* harmony import */ var _Jetstream_Button_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Jetstream/Button.vue */ "./resources/js/Jetstream/Button.vue");
+/* harmony import */ var _Layouts_StoreLayout_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/Layouts/StoreLayout.vue */ "./resources/js/Layouts/StoreLayout.vue");
+/* harmony import */ var _Jetstream_CategoryCard_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/Jetstream/CategoryCard.vue */ "./resources/js/Jetstream/CategoryCard.vue");
+
 
 
 
@@ -23125,7 +23125,9 @@ __webpack_require__.r(__webpack_exports__);
         reverseButtons: true
       }).then(function (res) {
         if (res.value) {
-          console.log('deleted');
+          _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.Inertia["delete"](route('categories.destroy', {
+            category: id
+          })); // console.log('deleted')
         }
       });
     };
@@ -23133,9 +23135,10 @@ __webpack_require__.r(__webpack_exports__);
     var __returned__ = {
       remove: remove,
       Link: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.Link,
-      JetButton: _Jetstream_Button_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-      StoreLayout: _Layouts_StoreLayout_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-      CategoryCard: _Jetstream_CategoryCard_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+      Inertia: _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.Inertia,
+      JetButton: _Jetstream_Button_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+      StoreLayout: _Layouts_StoreLayout_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+      CategoryCard: _Jetstream_CategoryCard_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,

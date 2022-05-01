@@ -48,7 +48,7 @@ Route::middleware([
 
         Route::resource('categories', AdminCategoryController::class);
 
-        Route::resource('pond', FilePondController::class)->only(['index', 'store', 'destroy']);
+        Route::resource('pond', FilePondController::class)->only(['index', 'show', 'store', 'destroy']);
     });
 
 });
