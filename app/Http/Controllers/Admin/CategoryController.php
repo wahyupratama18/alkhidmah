@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Http\Requests\{StoreCategoryRequest, UpdateCategoryRequest};
+use Illuminate\Http\RedirectResponse;
 use Inertia\{Inertia, Response};
 
 class CategoryController extends Controller
@@ -20,6 +21,7 @@ class CategoryController extends Controller
             'categories' => Category::query()
             ->with('parentCategory')
             ->withCount('categories')
+            ->withCount('products')
             ->get()
         ]);
     }
@@ -29,9 +31,12 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): Response
     {
-        //
+        return Inertia::render('Admin/Category/Create', [
+            'categories' => Category::select('id', 'name')
+            ->get()
+        ]);
     }
 
     /**
@@ -40,9 +45,11 @@ class CategoryController extends Controller
      * @param  \App\Http\Requests\StoreCategoryRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(StoreCategoryRequest $request): RedirectResponse
     {
-        //
+        Category::create($request);
+
+        return redirect()->route('categories.index');
     }
 
     /**

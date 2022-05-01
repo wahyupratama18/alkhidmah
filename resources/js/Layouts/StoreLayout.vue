@@ -18,7 +18,7 @@ defineProps({
 const showingNavigationDropdown = ref(false);
 
 const closeOnEscape = (e) => {
-    if (e.key === 'Escape' && showingNavigationDropdown.value == true) {
+    if (e.key === 'Escape' && showingNavigationDropdown.value) {
         showingNavigationDropdown.value = false;
     }
 }
@@ -66,7 +66,7 @@ const admin = (user) => {
             <!-- End left nav -->
 
             <!-- Right Nav [Ex: bg-gradient-to-br from-khidmah to-khidmah/90 rounded-bl-[5rem] ] -->
-            <div class="flex items-center justify-center px-8 flex-grow text-khidmah">
+            <div class="flex items-center justify-end sm:justify-center px-8 flex-grow text-khidmah">
 
                 <!-- Search box -->
                 <div class="hidden sm:flex items-center pl-4 grow justify-center h-full">
@@ -192,7 +192,7 @@ const admin = (user) => {
 
                 <!-- Mini Hamburger -->
                 <div class="flex lg:hidden ml-4 md:ml-0">
-                    <button @click="showingNavigationDropdown = !showingNavigationDropdown" class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-khidmah hover:bg-foreground focus:outline-none focus:bg-foreground focus:text-khidmah transition">
+                    <button @click="showingNavigationDropdown = !showingNavigationDropdown" class="inline-flex items-center justify-center p-2 rounded-md text-khidmah hover:text-khidmah hover:bg-foreground focus:outline-none focus:bg-foreground focus:text-khidmah transition">
                         <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                             <path
                                 :class="{'hidden': showingNavigationDropdown, 'inline-flex': !showingNavigationDropdown}"

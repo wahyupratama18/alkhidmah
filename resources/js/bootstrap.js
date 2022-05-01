@@ -26,3 +26,21 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/**
+ * Sweet alert (to create modal)
+ */
+window.Swal = require('sweetalert2')
+
+/**
+ * Izi Toast notification
+ */
+window.iziToast = require('izitoast')
+
+window.notifier = (title, message) => {
+    return {
+        title: title,
+        message: message,
+        position: 'topRight'
+    }
+}

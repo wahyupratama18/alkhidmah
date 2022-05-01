@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreCategoryRequest extends FormRequest
 {
@@ -11,9 +13,9 @@ class StoreCategoryRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        return $this->user()->can('create', Category::class);
     }
 
     /**
@@ -24,7 +26,9 @@ class StoreCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', 'string', Rule::unique(Category::class, 'name') ],
+            'category_id' => ['nullable', Rule::exists(Category::class, 'id') ],
+            'description' => ['required', 'string']
         ];
     }
 }

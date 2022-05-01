@@ -5,12 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany};
+use Illuminate\Support\Facades\Storage;
 
 class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'category_id'];
+    protected $fillable = ['name', 'category_id'],
+    
+    $appends = ['image_url'],
+    
+    $disk = 'public';
 
     /**
      * Get all of the products for the Category
@@ -60,5 +65,27 @@ class Category extends Model
     public function parentCategory(): BelongsTo
     {
         return $this->category()->with('parentCategory');
+    }
+
+    /**
+     * Get Image URL to be shown
+     *
+     * @return string
+     */
+    public function getImageUrlAttribute(): string
+    {
+        return $this->image_path
+        ? Storage::url($this->image_path)
+        : $this->defaultImageUrl();
+    }
+
+    /**
+     * Default Image URL for Category
+     *
+     * @return string
+     */
+    protected function defaultImageUrl(): string
+    {
+        return ''/* asset('storage/category/test.png') */;
     }
 }
