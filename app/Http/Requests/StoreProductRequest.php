@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreProductRequest extends FormRequest
 {
@@ -11,9 +13,9 @@ class StoreProductRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        return $this->user()->can('create', Product::class);
     }
 
     /**
@@ -21,10 +23,13 @@ class StoreProductRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', Rule::unique(Product::class, 'name') ],
+            'description' => ['required', 'string'],
+            'images' => ['nullable', 'array'],
+            'images.*' => ['required',  Rule::exists(Temp::class, 'id')]
         ];
     }
 }

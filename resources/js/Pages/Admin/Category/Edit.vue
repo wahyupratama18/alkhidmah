@@ -11,23 +11,25 @@ import vSelect from 'vue-select';
 import vueFilePond from 'vue-filepond';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
+import iziToast from 'izitoast';
 
-defineProps({
+const props = defineProps({
+    category: Object,
     categories: Array
 })
 
 const form = useForm({
-    _method: 'POST',
-    name: null,
-    category_id: null,
-    description: null,
+    _method: 'PUT',
+    name: props.category.name,
+    category_id: props.category.category_id,
+    description: props.category.description,
     image: null
 })
 
 const submitted = () => {
-    form.post(route('categories.store'), {
+    form.put(route('categories.update', {category: props.category.id}), {
         onSuccess: () => {
-            // window.location.
+            iziToast.success(notifier())
         }
     })
 }
@@ -116,7 +118,7 @@ const server = {
 
             <!-- image -->
             <div class="mb-4">
-                <JetLabel for="image" value="Gambar" />
+                <JetLabel for="image" value="Gambar Baru" />
                 <FilePond
                     name="image"
                     ref="pond"

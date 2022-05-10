@@ -35,8 +35,7 @@ class CategoryController extends Controller
     public function create(): Response
     {
         return Inertia::render('Admin/Category/Create', [
-            'categories' => Category::select('id', 'name')
-            ->get()
+            'categories' => Category::select('id', 'name')->get()
         ]);
     }
 
@@ -49,9 +48,8 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request): RedirectResponse
     {
         Category::create(
-            $request->safe(['name', 'category_id', 'description']) +
-            ['image_path' => Temp::find($request->image)->movePublicly('category')]
-        );
+            $request->safe(['name', 'category_id', 'description'])
+        )->moveImage(Temp::find($request->image));
 
         return redirect()->route('categories.index');
     }
@@ -62,9 +60,11 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show(Category $category): Response
     {
-        //
+        return Inertia::render('Admin/Category/Show', [
+            'category' => $category->load(['category:id,name', 'products.firstPicture'])
+        ]);
     }
 
     /**
@@ -73,9 +73,12 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(Category $category): Response
     {
-        //
+        return Inertia::render('Admin/Category/Edit', [
+            'categories' => Category::select('id', 'name')->get(),
+            'category' => $category
+        ]);
     }
 
     /**
@@ -85,9 +88,13 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category): RedirectResponse
     {
-        //
+        $category
+        ->moveImage(Temp::find($request->image))
+        ->update($request->safe(['name', 'category_id', 'description']));
+
+        return redirect()->route('categories.index');
     }
 
     /**
@@ -96,7 +103,7 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Category $category): RedirectResponse
     {
         $category->delete();
 

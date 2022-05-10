@@ -37,7 +37,7 @@ window.Swal = require('sweetalert2')
  */
 window.iziToast = require('izitoast')
 
-window.notifier = (title, message) => {
+window.notifier = (title = 'Sukses!', message = 'Data berhasil tersimpan') => {
     return {
         title: title,
         message: message,

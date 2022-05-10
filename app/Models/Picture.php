@@ -10,7 +10,7 @@ class Picture extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['product_id', 'picture_path', 'name'];
+    protected $fillable = ['picture_path', 'name'];
 
     /**
      * Get the product that owns the Picture

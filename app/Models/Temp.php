@@ -17,6 +17,12 @@ class Temp extends Model
 
     public const TEMP = 'temp';
 
+    /**
+     * Move to public folder
+     *
+     * @param string $into
+     * @return string
+     */
     public function movePublicly(string $into): string
     {
         $newPath = str_replace(self::TEMP, $into, $this->path);
@@ -28,7 +34,12 @@ class Temp extends Model
         return $newPath;
     }
 
-    private function selfDelete()
+    /**
+     * Delete record
+     *
+     * @return void
+     */
+    private function selfDelete(): void
     {
         $this->delete();
     }

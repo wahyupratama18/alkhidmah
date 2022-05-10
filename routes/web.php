@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\{FilePondController, LandingController};
-use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\{
+    CategoryController as AdminCategoryController,
+    ProductController
+};
 use App\Http\Controllers\Landing\CategoryController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +50,7 @@ Route::middleware([
         ->name('dashboard');
 
         Route::resource('categories', AdminCategoryController::class);
+        Route::resource('categories.products', ProductController::class);
 
         Route::resource('pond', FilePondController::class)->only(['index', 'show', 'store', 'destroy']);
     });

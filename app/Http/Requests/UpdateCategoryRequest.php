@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\{Category, Temp};
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCategoryRequest extends FormRequest
 {
@@ -11,9 +13,9 @@ class UpdateCategoryRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        return $this->user()->can('create', Category::class);
     }
 
     /**
@@ -21,10 +23,13 @@ class UpdateCategoryRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', Rule::unique(Category::class, 'name')->ignore($this->category) ],
+            'category_id' => ['nullable', Rule::exists(Category::class, 'id') ],
+            'description' => ['required', 'string'],
+            'image' => ['nullable', Rule::exists(Temp::class, 'id')]
         ];
     }
 }

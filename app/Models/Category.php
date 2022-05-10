@@ -11,11 +11,13 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'category_id', 'description', 'image_path'],
+    protected $fillable = ['name', 'category_id', 'description'],
     
     $appends = ['image_url'],
     
     $disk = 'public';
+
+    private const CATDIR = 'category';
 
     /**
      * Get all of the products for the Category
@@ -87,5 +89,23 @@ class Category extends Model
     protected function defaultImageUrl(): string
     {
         return ''/* asset('storage/category/test.png') */;
+    }
+
+    /**
+     * Move temp images to categories folder
+     *
+     * @param Temp|null $temp
+     * @return Category
+     */
+    public function moveImage(Temp $temp = null): Category
+    {
+        if (empty($temp)) {
+            return $this;
+        }
+
+        $this->image_path = $temp->movePublicly(self::CATDIR);
+        $this->save();
+
+        return $this;
     }
 }

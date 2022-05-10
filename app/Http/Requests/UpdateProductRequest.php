@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\{Picture, Product, Temp};
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateProductRequest extends FormRequest
 {
@@ -11,9 +13,9 @@ class UpdateProductRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        return $this->user()->can('update', $this->product);
     }
 
     /**
@@ -21,10 +23,15 @@ class UpdateProductRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', Rule::unique(Product::class, 'name')->ignore($this->product) ],
+            'description' => ['required', 'string'],
+            'images' => ['nullable', 'array'],
+            'images.*' => ['required',  Rule::exists(Temp::class, 'id')],
+            'deleted' => ['nullable', 'array'],
+            'deleted.*' => ['required', Rule::exists(Picture::class)]
         ];
     }
 }

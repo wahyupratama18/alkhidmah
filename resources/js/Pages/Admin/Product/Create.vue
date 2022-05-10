@@ -12,20 +12,20 @@ import vueFilePond from 'vue-filepond';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 
-defineProps({
-    categories: Array
+const props = defineProps({
+    category: Number
 })
 
 const form = useForm({
     _method: 'POST',
     name: null,
-    category_id: null,
+    category_id: props.category,
     description: null,
-    image: null
+    images: [],
 })
 
 const submitted = () => {
-    form.post(route('categories.store'), {
+    form.post(route('categories.products.store', {category: props.category}), {
         onSuccess: () => {
             // window.location.
         }
@@ -52,7 +52,7 @@ const server = {
         }).then(data => {
             load(data.data)
 
-            form.image = data.data
+            form.images.push(data.data)
         }).catch(err => {
             error('Failed')
         })
@@ -73,7 +73,7 @@ const server = {
 </script>
 
 <template>
-    <StoreLayout title="Tambah Kategori">
+    <StoreLayout title="Tambah Produk Baru">
         <!-- Content -->
         <form class="p-8" @submit.prevent="submitted">
             <!-- name -->
@@ -87,18 +87,6 @@ const server = {
                     autocomplete="name"
                 />
                 <JetInputError :message="form.errors.name" class="mt-2" />
-            </div>
-
-            <!-- sub category -->
-            <div class="mb-4">
-                <JetLabel for="category_id" value="Sub Kategori (apabila ingin nested)" />
-                <vSelect
-                    v-model="form.category_id"
-                    class="mt-1 block w-full"
-                    :options="categories"
-                    label="name"
-                    :reduce="category => category.id" />
-                <JetInputError :message="form.errors.category_id" class="mt-2" />
             </div>
 
             <!-- description -->
@@ -122,9 +110,10 @@ const server = {
                     ref="pond"
                     accepted-file-types="image/jpeg, image/png"
                     :server="server"
-                    :files="form.image"
+                    :files="form.images"
+                    :allowMultiple="true"
                 />
-                <JetInputError :message="form.errors.image" class="mt-2" />
+                <JetInputError :message="form.errors.images" class="mt-2" />
             </div>
 
             <div class="flex justify-end">
