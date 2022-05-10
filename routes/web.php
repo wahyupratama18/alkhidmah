@@ -49,7 +49,7 @@ Route::middleware([
         // User Carts
         Route::get('carts', [LandingController::class, 'carts'])->name('carts');
 
-        Route::post('product/{variant}', [ProductController::class, 'store'])->name('product.store');
+        Route::post('product', [ProductController::class, 'store'])->name('product.store');
     });
     
     

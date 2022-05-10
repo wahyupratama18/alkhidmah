@@ -31,7 +31,12 @@ class UpdateProductRequest extends FormRequest
             'images' => ['nullable', 'array'],
             'images.*' => ['required',  Rule::exists(Temp::class, 'id')],
             'deleted' => ['nullable', 'array'],
-            'deleted.*' => ['required', Rule::exists(Picture::class)]
+            'deleted.*' => ['required', Rule::exists(Picture::class)],
+            'variants' => ['nullable', 'array'],
+            'variants.*.type' => ['required', Rule::exists(Type::class, 'id')],
+            'variants.*.name' => ['required', 'string', 'distinct:ignore_case'],
+            'variants.*.price' => ['required', 'integer', 'min:1'],
+            'variants.*.stock' => ['required', 'integer', 'min:1'],
         ];
     }
 }

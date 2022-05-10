@@ -48,7 +48,9 @@ class ProductController extends Controller
      */
     public function show(Product $product): Response
     {
-        return Inertia::render();
+        return Inertia::render('Landing/Product', [
+            'product' => $product->load(['pictures', 'variants', 'firstVariant'])
+        ]);
     }
 
     /**

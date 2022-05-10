@@ -1,9 +1,10 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-@import 'vue-select/dist/vue-select.css';
-@import 'filepond/dist/filepond.min.css';
-@import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
+@import 'vue-select/dist/vue-select';
+@import 'filepond/dist/filepond.min';
+@import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min';
+@import 'vue3-carousel/dist/carousel';
 
 a.filepond--credits {
     @apply hidden
