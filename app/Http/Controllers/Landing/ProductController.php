@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Landing;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
+use App\Http\Requests\{StoreProductRequest, UpdateProductRequest};
+use Inertia\{Inertia, Response};
 
 class ProductController extends Controller
 {
@@ -45,9 +46,9 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(Product $product): Response
     {
-        //
+        return Inertia::render();
     }
 
     /**

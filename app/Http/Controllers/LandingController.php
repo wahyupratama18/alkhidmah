@@ -15,9 +15,9 @@ class LandingController extends Controller
     {
         return Inertia::render('Glance', [
             'categories' => Category::query()
-            ->whereNull('category_id')
+            // ->whereNull('category_id')
             ->with([
-                'products' => fn($query) => $query->limit(5)
+                'products' => fn($query) => $query->limit(5)->with('firstPicture')
             ])->get()
         ]);
     }

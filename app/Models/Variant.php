@@ -10,9 +10,7 @@ class Variant extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['product_id', 'type', 'name', 'price', 'stock'];
-
-    public const TYPE = [];
+    protected $fillable = ['type', 'name', 'price', 'stock'];
 
     /**
      * Get the product that owns the Variant

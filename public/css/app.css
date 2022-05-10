@@ -1519,6 +1519,14 @@ select {
 .bg-foreground\/75 {
   background-color: rgb(251 239 192 / 0.75);
 }
+.bg-foreground {
+  --tw-bg-opacity: 1;
+  background-color: rgb(251 239 192 / var(--tw-bg-opacity));
+}
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
+}
 .bg-opacity-25 {
   --tw-bg-opacity: 0.25;
 }
@@ -1559,6 +1567,9 @@ select {
 }
 .p-8 {
   padding: 2rem;
+}
+.p-4 {
+  padding: 1rem;
 }
 .px-4 {
   padding-left: 1rem;

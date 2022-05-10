@@ -252,7 +252,7 @@ const admin = (user) => {
         <!-- End Main View -->
         
         <!-- Footer -->
-        <footer class="bg-foreground/75 p-8">
+        <footer class="bg-foreground p-8">
             <div class="grid md:grid-cols-3">
                 <div class="my-3">
                     <!-- <div class="flex items-center mb-4"> -->

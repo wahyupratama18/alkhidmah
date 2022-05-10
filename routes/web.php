@@ -1,11 +1,17 @@
 <?php
 
-use App\Http\Controllers\{FilePondController, LandingController};
+use App\Http\Controllers\{
+    FilePondController,
+    LandingController
+};
 use App\Http\Controllers\Admin\{
     CategoryController as AdminCategoryController,
+    ProductController as AdminProductController
+};
+use App\Http\Controllers\Landing\{
+    CategoryController,
     ProductController
 };
-use App\Http\Controllers\Landing\CategoryController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,6 +34,8 @@ Route::resource('category', CategoryController::class)
 ->only(['index', 'show'])
 ->scoped(['category' => 'slug']);
 
+Route::get('product/{product:slug}', [ProductController::class, 'show'])->name('product.show');
+
 Route::get('search', [LandingController::class, 'search'])->name('search');
 
 // Authenticated user only
@@ -40,6 +48,8 @@ Route::middleware([
     Route::middleware('can:basicUser,user')->group(function () {
         // User Carts
         Route::get('carts', [LandingController::class, 'carts'])->name('carts');
+
+        Route::post('product/{variant}', [ProductController::class, 'store'])->name('product.store');
     });
     
     
@@ -50,7 +60,7 @@ Route::middleware([
         ->name('dashboard');
 
         Route::resource('categories', AdminCategoryController::class);
-        Route::resource('categories.products', ProductController::class);
+        Route::resource('categories.products', AdminProductController::class);
 
         Route::resource('pond', FilePondController::class)->only(['index', 'show', 'store', 'destroy']);
     });

@@ -20,19 +20,25 @@ const imageStyle = computed(() => {
 </script>
 
 <template>
-    <div class="bg-white rounded-lg shadow">
+    <Link
+        :href="
+            admin
+            ? route('categories.products.show', {category: product.category_id, product: product.id})
+            : route('product.show', {product: product.slug})"
+        class="bg-white rounded-lg shadow">
         <!-- Title -->
-        <Link
-            :href="admin ? route('categories.products.show', {category: product.category_id, product: product.id}) : route('product.show', {product: product.slug})"
-            class="h-48 rounded-t-lg bg-no-repeat bg-center bg-cover bg-khidmah/80 flex items-center justify-center text-white text-lg"
-            :style="imageStyle"
-            v-text="product.name" />
+        <div
+            class="h-48 rounded-t-lg bg-no-repeat bg-center bg-cover bg-khidmah/80 text-lg"
+            :style="imageStyle" />
         
         <!-- Content if enabled -->
         <div v-if="detail" class="p-6 pt-3">
             <div class="flex justify-end mb-2" v-if="$page.props.user.is_admin">
                 <slot name="admin" />
             </div>
+
+            <h3 class="font-bold text-khidmah" v-text="product.name" />
+            <h6 v-text="product.price" />
         </div>
-    </div>
+    </Link>
 </template>

@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\{StoreProductRequest, UpdateProductRequest};
-use App\Models\{Category, Picture, Product};
+use App\Models\{Category, Picture, Product, Type};
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Inertia\{Inertia, Response};
 
 class ProductController extends Controller
@@ -27,7 +28,10 @@ class ProductController extends Controller
      */
     public function create(Category $category): Response
     {
-        return Inertia::render('Admin/Product/Create', ['category' => $category->id]);
+        return Inertia::render('Admin/Product/Create', [
+            'category' => $category->id,
+            'types' => Type::query()->select('id', 'name')->get()
+        ]);
     }
 
     /**
@@ -38,8 +42,13 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request, Category $category): RedirectResponse
     {
-        $category->products()->create($request->safe(['name', 'description']))
-        ->moveImages($request->images);
+        DB::transaction(function () use ($request, $category) {
+
+            $category->products()->create($request->safe(['name', 'description']))
+            ->moveImages($request->images)
+            ->activeVariants($request->variants);
+
+        });
 
         return redirect()->route('categories.show', $category);
     }
@@ -52,7 +61,10 @@ class ProductController extends Controller
      */
     public function show(Category $category, Product $product): Response
     {
-        return Inertia::render('Admin/Products/Show', ['product' => $product]);
+        return Inertia::render('Admin/Products/Show', [
+            'product' => $product,
+            'types' => Type::query()->select('id', 'name')->get()
+        ]);
     }
 
     /**
@@ -63,7 +75,10 @@ class ProductController extends Controller
      */
     public function edit(Category $category, Product $product): Response
     {
-        return Inertia::render('Admin/Product/Edit', ['product' => $product]);
+        return Inertia::render('Admin/Product/Edit', [
+            'product' => $product->load('variants:id,product_id,name,price,stock,type'),
+            'types' => Type::query()->select('id', 'name')->get()
+        ]);
     }
 
     /**
@@ -78,6 +93,7 @@ class ProductController extends Controller
     {
         $product
         ->moveImages($request->images)
+        ->activeVariants($request->variants)
         ->update($request->safe(['name', 'description']));
 
         if ($request->deleted) {

@@ -1,5 +1,6 @@
 <script setup>
 import StoreLayout from '@/Layouts/StoreLayout.vue';
+import ProductCard from '@/Jetstream/ProductCard.vue';
 import Welcome from '@/Jetstream/Welcome.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 
@@ -26,11 +27,9 @@ defineProps({
                     <!-- End Heading -->
                     
                     <!-- Products -->
-                    <ol v-for="(product, prod) in category.products" :key="prod">
-                        <li>
-                            <!-- Product card came here -->
-                        </li>
-                    </ol>
+                    <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-6 mt-3">
+                        <ProductCard v-for="(product, p) in category.products" :key="p" :product="product" :detail="true" />
+                    </div>
                     <!-- End Products -->
                 </li>
             </ol>

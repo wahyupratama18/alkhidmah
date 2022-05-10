@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\{Category, Temp};
 use App\Http\Requests\{StoreCategoryRequest, UpdateCategoryRequest};
-use App\Models\Temp;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Inertia\{Inertia, Response};
 
 class CategoryController extends Controller
@@ -47,9 +47,11 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request): RedirectResponse
     {
-        Category::create(
-            $request->safe(['name', 'category_id', 'description'])
-        )->moveImage(Temp::find($request->image));
+        DB::transaction(function () use ($request) {
+            Category::create(
+                $request->safe(['name', 'category_id', 'description'])
+            )->moveImage(Temp::find($request->image));
+        });
 
         return redirect()->route('categories.index');
     }
@@ -63,7 +65,11 @@ class CategoryController extends Controller
     public function show(Category $category): Response
     {
         return Inertia::render('Admin/Category/Show', [
-            'category' => $category->load(['category:id,name', 'products.firstPicture'])
+            'category' => $category->load('category:id,name')
+            ->load(['products' => fn ($product) => $product
+                ->with('firstPicture')
+                ->with('firstVariant')
+            ])
         ]);
     }
 
@@ -90,9 +96,11 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category): RedirectResponse
     {
-        $category
-        ->moveImage(Temp::find($request->image))
-        ->update($request->safe(['name', 'category_id', 'description']));
+        DB::transaction(function () use ($request, $category) {
+            $category
+            ->moveImage(Temp::find($request->image))
+            ->update($request->safe(['name', 'category_id', 'description']));
+        });
 
         return redirect()->route('categories.index');
     }

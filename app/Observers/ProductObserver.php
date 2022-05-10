@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Product;
+use Illuminate\Support\Str;
 
 class ProductObserver
 {
@@ -14,7 +15,7 @@ class ProductObserver
      */
     public function creating(Product $product)
     {
-        $product->slug = $product->name;
+        $product->slug = Str::slug($product->name);
     }
     
     /**
@@ -25,7 +26,7 @@ class ProductObserver
      */
     public function updating(Product $product)
     {
-        $product->slug = $product->name;
+        $product->slug = Str::slug($product->name);
     }
 
     /**

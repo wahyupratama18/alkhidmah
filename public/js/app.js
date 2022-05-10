@@ -23446,7 +23446,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    category: Number
+    category: Number,
+    types: Array
   },
   setup: function setup(__props, _ref) {
     var expose = _ref.expose;
@@ -23457,8 +23458,33 @@ __webpack_require__.r(__webpack_exports__);
       name: null,
       category_id: props.category,
       description: null,
-      images: []
+      images: [],
+      variants: []
     });
+
+    var newVariant = function newVariant() {
+      form.variants.push({
+        type: null,
+        name: null,
+        price: null,
+        stock: null
+      });
+    };
+
+    newVariant();
+
+    var removeVariant = function removeVariant(index) {
+      Swal.fire({
+        text: "Apakah anda yakin ingin menghapusnya?",
+        icon: 'warning',
+        showCancelButton: true,
+        reverseButtons: true
+      }).then(function (res) {
+        if (res.value) {
+          form.variants.splice(index, 1);
+        }
+      });
+    };
 
     var submitted = function submitted() {
       form.post(route('categories.products.store', {
@@ -23501,6 +23527,8 @@ __webpack_require__.r(__webpack_exports__);
     var __returned__ = {
       props: props,
       form: form,
+      newVariant: newVariant,
+      removeVariant: removeVariant,
       submitted: submitted,
       FilePond: FilePond,
       server: server,
@@ -23569,7 +23597,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    product: Object
+    product: Object,
+    types: Array
   },
   setup: function setup(__props, _ref) {
     var expose = _ref.expose;
@@ -23580,8 +23609,31 @@ __webpack_require__.r(__webpack_exports__);
       name: props.product.name,
       description: props.product.description,
       images: [],
-      deleted: []
+      deleted: [],
+      variants: props.product.variants
     });
+
+    var newVariant = function newVariant() {
+      form.variants.push({
+        type: null,
+        name: null,
+        price: null,
+        stock: null
+      });
+    };
+
+    var removeVariant = function removeVariant(index) {
+      Swal.fire({
+        text: "Apakah anda yakin ingin menghapusnya?",
+        icon: 'warning',
+        showCancelButton: true,
+        reverseButtons: true
+      }).then(function (res) {
+        if (res.value) {
+          form.variants.splice(index, 1);
+        }
+      });
+    };
 
     var submitted = function submitted() {
       form.put(route('categories.products.update', {
@@ -23624,6 +23676,8 @@ __webpack_require__.r(__webpack_exports__);
     var __returned__ = {
       props: props,
       form: form,
+      newVariant: newVariant,
+      removeVariant: removeVariant,
       submitted: submitted,
       FilePond: FilePond,
       server: server,
@@ -24369,8 +24423,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Layouts_StoreLayout_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Layouts/StoreLayout.vue */ "./resources/js/Layouts/StoreLayout.vue");
-/* harmony import */ var _Jetstream_Welcome_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Jetstream/Welcome.vue */ "./resources/js/Jetstream/Welcome.vue");
-/* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
+/* harmony import */ var _Jetstream_ProductCard_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Jetstream/ProductCard.vue */ "./resources/js/Jetstream/ProductCard.vue");
+/* harmony import */ var _Jetstream_Welcome_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Jetstream/Welcome.vue */ "./resources/js/Jetstream/Welcome.vue");
+/* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
+
 
 
 
@@ -24383,8 +24439,9 @@ __webpack_require__.r(__webpack_exports__);
     expose();
     var __returned__ = {
       StoreLayout: _Layouts_StoreLayout_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-      Welcome: _Jetstream_Welcome_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-      Link: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.Link
+      ProductCard: _Jetstream_ProductCard_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+      Welcome: _Jetstream_Welcome_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+      Link: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__.Link
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -26591,30 +26648,48 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "bg-white rounded-lg shadow"
-};
-var _hoisted_2 = {
   key: 0,
   "class": "p-6 pt-3"
 };
-var _hoisted_3 = {
+var _hoisted_2 = {
   key: 0,
   "class": "flex justify-end mb-2"
 };
+var _hoisted_3 = ["textContent"];
+var _hoisted_4 = ["textContent"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Title "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Link"], {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["Link"], {
     href: $props.admin ? _ctx.route('categories.products.show', {
       category: $props.product.category_id,
       product: $props.product.id
     }) : _ctx.route('product.show', {
       product: $props.product.slug
     }),
-    "class": "h-48 rounded-t-lg bg-no-repeat bg-center bg-cover bg-khidmah/80 flex items-center justify-center text-white text-lg",
-    style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)($setup.imageStyle),
-    textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.product.name)
-  }, null, 8
+    "class": "bg-white rounded-lg shadow"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Title "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+        "class": "h-48 rounded-t-lg bg-no-repeat bg-center bg-cover bg-khidmah/80 text-lg",
+        style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)($setup.imageStyle)
+      }, null, 4
+      /* STYLE */
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Content if enabled "), $props.detail ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_ctx.$page.props.user.is_admin ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "admin")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+        "class": "font-bold text-khidmah",
+        textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.product.name)
+      }, null, 8
+      /* PROPS */
+      , _hoisted_3), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", {
+        textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.product.price)
+      }, null, 8
+      /* PROPS */
+      , _hoisted_4)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
+    }),
+    _: 3
+    /* FORWARDED */
+
+  }, 8
   /* PROPS */
-  , ["href", "style", "textContent"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Content if enabled "), $props.detail ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_2, [_ctx.$page.props.user.is_admin ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "admin")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+  , ["href"]);
 }
 
 /***/ }),
@@ -27542,7 +27617,7 @@ var _hoisted_29 = {
   "class": "mt-20 bg-pattern min-h-screen"
 };
 var _hoisted_30 = {
-  "class": "bg-foreground/75 p-8"
+  "class": "bg-foreground p-8"
 };
 var _hoisted_31 = {
   "class": "grid md:grid-cols-3"
@@ -28766,6 +28841,27 @@ var _hoisted_4 = {
 var _hoisted_5 = {
   "class": "flex justify-end"
 };
+var _hoisted_6 = ["onClick"];
+var _hoisted_7 = {
+  "class": "mb-4"
+};
+var _hoisted_8 = {
+  key: 0,
+  "class": "mb-4"
+};
+var _hoisted_9 = {
+  key: 1,
+  "class": "mb-4"
+};
+var _hoisted_10 = {
+  "class": "mb-4"
+};
+var _hoisted_11 = {
+  "class": "mb-4"
+};
+var _hoisted_12 = {
+  "class": "flex justify-end"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["StoreLayout"], {
     title: "Tambah Produk Baru"
@@ -28829,7 +28925,137 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "class": "mt-2"
       }, null, 8
       /* PROPS */
-      , ["message"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetButton"], {
+      , ["message"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Variants "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetButton"], {
+        type: "button",
+        textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)('Tambah Varian'),
+        onClick: $setup.newVariant
+      }, null, 8
+      /* PROPS */
+      , ["textContent"]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.form.variants, function (variant, index) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+          key: index
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+          "class": "mdi mdi-trash-can cursor-pointer text-red-500",
+          onClick: function onClick($event) {
+            return $setup.removeVariant(index);
+          }
+        }, null, 8
+        /* PROPS */
+        , _hoisted_6)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Type "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetLabel"], {
+          "for": "image",
+          value: "Tipe*"
+        }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["vSelect"], {
+          modelValue: $setup.form.variants[index].type,
+          "onUpdate:modelValue": function onUpdateModelValue($event) {
+            return $setup.form.variants[index].type = $event;
+          },
+          "class": "mt-1 block w-full",
+          options: $props.types,
+          label: "name",
+          reduce: function reduce(type) {
+            return type.id;
+          }
+        }, null, 8
+        /* PROPS */
+        , ["modelValue", "onUpdate:modelValue", "options", "reduce"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetInputError"], {
+          message: $setup.form.errors["variants.".concat(index, ".type")],
+          "class": "mt-2"
+        }, null, 8
+        /* PROPS */
+        , ["message"])]), variant.type ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+          key: 0
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Variant's Name "), variant.type === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetLabel"], {
+          "for": "name[".concat(index, "]"),
+          value: "Pilih Warna*"
+        }, null, 8
+        /* PROPS */
+        , ["for"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetInput"], {
+          id: "name[".concat(index, "]"),
+          modelValue: $setup.form.variants[index].name,
+          "onUpdate:modelValue": function onUpdateModelValue($event) {
+            return $setup.form.variants[index].name = $event;
+          },
+          type: "color",
+          "class": "mt-1 block w-full",
+          autocomplete: "name"
+        }, null, 8
+        /* PROPS */
+        , ["id", "modelValue", "onUpdate:modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetInputError"], {
+          message: $setup.form.errors["variants.".concat(index, ".name")],
+          "class": "mt-2"
+        }, null, 8
+        /* PROPS */
+        , ["message"])])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetLabel"], {
+          "for": "name[".concat(index, "]"),
+          value: "Varian*"
+        }, null, 8
+        /* PROPS */
+        , ["for"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetInput"], {
+          id: "name[".concat(index, "]"),
+          modelValue: $setup.form.variants[index].name,
+          "onUpdate:modelValue": function onUpdateModelValue($event) {
+            return $setup.form.variants[index].name = $event;
+          },
+          type: "text",
+          "class": "mt-1 block w-full",
+          autocomplete: "name"
+        }, null, 8
+        /* PROPS */
+        , ["id", "modelValue", "onUpdate:modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetInputError"], {
+          message: $setup.form.errors["variants.".concat(index, ".name")],
+          "class": "mt-2"
+        }, null, 8
+        /* PROPS */
+        , ["message"])])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" End variants name "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Price "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetLabel"], {
+          "for": "price[".concat(index, "]"),
+          value: "Harga*"
+        }, null, 8
+        /* PROPS */
+        , ["for"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetInput"], {
+          id: "price[".concat(index, "]"),
+          modelValue: $setup.form.variants[index].price,
+          "onUpdate:modelValue": function onUpdateModelValue($event) {
+            return $setup.form.variants[index].price = $event;
+          },
+          type: "number",
+          "class": "mt-1 block w-full",
+          autocomplete: "price"
+        }, null, 8
+        /* PROPS */
+        , ["id", "modelValue", "onUpdate:modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetInputError"], {
+          message: $setup.form.errors["variants.".concat(index, ".price")],
+          "class": "mt-2"
+        }, null, 8
+        /* PROPS */
+        , ["message"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Stok "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetLabel"], {
+          "for": "stock[".concat(index, "]"),
+          value: "Stok*"
+        }, null, 8
+        /* PROPS */
+        , ["for"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetInput"], {
+          id: "stock[".concat(index, "]"),
+          modelValue: $setup.form.variants[index].stock,
+          "onUpdate:modelValue": function onUpdateModelValue($event) {
+            return $setup.form.variants[index].stock = $event;
+          },
+          type: "number",
+          "class": "mt-1 block w-full",
+          autocomplete: "stock"
+        }, null, 8
+        /* PROPS */
+        , ["id", "modelValue", "onUpdate:modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetInputError"], {
+          message: $setup.form.errors["variants.".concat(index, ".stock")],
+          "class": "mt-2"
+        }, null, 8
+        /* PROPS */
+        , ["message"])])], 64
+        /* STABLE_FRAGMENT */
+        )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64
+        /* STABLE_FRAGMENT */
+        );
+      }), 128
+      /* KEYED_FRAGMENT */
+      )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetButton"], {
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
           'opacity-25': $setup.form.processing
         }),
@@ -28873,6 +29099,27 @@ var _hoisted_4 = {
   "class": "mb-4"
 };
 var _hoisted_5 = {
+  "class": "flex justify-end"
+};
+var _hoisted_6 = ["onClick"];
+var _hoisted_7 = {
+  "class": "mb-4"
+};
+var _hoisted_8 = {
+  key: 0,
+  "class": "mb-4"
+};
+var _hoisted_9 = {
+  key: 1,
+  "class": "mb-4"
+};
+var _hoisted_10 = {
+  "class": "mb-4"
+};
+var _hoisted_11 = {
+  "class": "mb-4"
+};
+var _hoisted_12 = {
   "class": "flex justify-end"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -28938,7 +29185,137 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "class": "mt-2"
       }, null, 8
       /* PROPS */
-      , ["message"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetButton"], {
+      , ["message"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Variants "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetButton"], {
+        type: "button",
+        textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)('Tambah Varian'),
+        onClick: $setup.newVariant
+      }, null, 8
+      /* PROPS */
+      , ["textContent"]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.form.variants, function (variant, index) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+          key: index
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+          "class": "mdi mdi-trash-can cursor-pointer text-red-500",
+          onClick: function onClick($event) {
+            return $setup.removeVariant(index);
+          }
+        }, null, 8
+        /* PROPS */
+        , _hoisted_6)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Type "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetLabel"], {
+          "for": "image",
+          value: "Tipe*"
+        }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["vSelect"], {
+          modelValue: $setup.form.variants[index].type,
+          "onUpdate:modelValue": function onUpdateModelValue($event) {
+            return $setup.form.variants[index].type = $event;
+          },
+          "class": "mt-1 block w-full",
+          options: $props.types,
+          label: "name",
+          reduce: function reduce(type) {
+            return type.id;
+          }
+        }, null, 8
+        /* PROPS */
+        , ["modelValue", "onUpdate:modelValue", "options", "reduce"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetInputError"], {
+          message: $setup.form.errors["variants.".concat(index, ".type")],
+          "class": "mt-2"
+        }, null, 8
+        /* PROPS */
+        , ["message"])]), variant.type ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+          key: 0
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Variant's Name "), variant.type === 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetLabel"], {
+          "for": "name[".concat(index, "]"),
+          value: "Pilih Warna*"
+        }, null, 8
+        /* PROPS */
+        , ["for"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetInput"], {
+          id: "name[".concat(index, "]"),
+          modelValue: $setup.form.variants[index].name,
+          "onUpdate:modelValue": function onUpdateModelValue($event) {
+            return $setup.form.variants[index].name = $event;
+          },
+          type: "color",
+          "class": "mt-1 block w-full",
+          autocomplete: "name"
+        }, null, 8
+        /* PROPS */
+        , ["id", "modelValue", "onUpdate:modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetInputError"], {
+          message: $setup.form.errors["variants.".concat(index, ".name")],
+          "class": "mt-2"
+        }, null, 8
+        /* PROPS */
+        , ["message"])])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetLabel"], {
+          "for": "name[".concat(index, "]"),
+          value: "Varian*"
+        }, null, 8
+        /* PROPS */
+        , ["for"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetInput"], {
+          id: "name[".concat(index, "]"),
+          modelValue: $setup.form.variants[index].name,
+          "onUpdate:modelValue": function onUpdateModelValue($event) {
+            return $setup.form.variants[index].name = $event;
+          },
+          type: "text",
+          "class": "mt-1 block w-full",
+          autocomplete: "name"
+        }, null, 8
+        /* PROPS */
+        , ["id", "modelValue", "onUpdate:modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetInputError"], {
+          message: $setup.form.errors["variants.".concat(index, ".name")],
+          "class": "mt-2"
+        }, null, 8
+        /* PROPS */
+        , ["message"])])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" End variants name "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Price "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetLabel"], {
+          "for": "price[".concat(index, "]"),
+          value: "Harga*"
+        }, null, 8
+        /* PROPS */
+        , ["for"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetInput"], {
+          id: "price[".concat(index, "]"),
+          modelValue: $setup.form.variants[index].price,
+          "onUpdate:modelValue": function onUpdateModelValue($event) {
+            return $setup.form.variants[index].price = $event;
+          },
+          type: "number",
+          "class": "mt-1 block w-full",
+          autocomplete: "price"
+        }, null, 8
+        /* PROPS */
+        , ["id", "modelValue", "onUpdate:modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetInputError"], {
+          message: $setup.form.errors["variants.".concat(index, ".price")],
+          "class": "mt-2"
+        }, null, 8
+        /* PROPS */
+        , ["message"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Stok "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetLabel"], {
+          "for": "stock[".concat(index, "]"),
+          value: "Stok*"
+        }, null, 8
+        /* PROPS */
+        , ["for"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetInput"], {
+          id: "stock[".concat(index, "]"),
+          modelValue: $setup.form.variants[index].stock,
+          "onUpdate:modelValue": function onUpdateModelValue($event) {
+            return $setup.form.variants[index].stock = $event;
+          },
+          type: "number",
+          "class": "mt-1 block w-full",
+          autocomplete: "stock"
+        }, null, 8
+        /* PROPS */
+        , ["id", "modelValue", "onUpdate:modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetInputError"], {
+          message: $setup.form.errors["variants.".concat(index, ".stock")],
+          "class": "mt-2"
+        }, null, 8
+        /* PROPS */
+        , ["message"])])], 64
+        /* STABLE_FRAGMENT */
+        )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64
+        /* STABLE_FRAGMENT */
+        );
+      }), 128
+      /* KEYED_FRAGMENT */
+      )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["JetButton"], {
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
           'opacity-25': $setup.form.processing
         }),
@@ -30095,12 +30472,9 @@ var _hoisted_3 = {
   "class": "flex items center gap-x-2"
 };
 var _hoisted_4 = ["textContent"];
-
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Product card came here ")], -1
-/* HOISTED */
-);
-
-var _hoisted_6 = [_hoisted_5];
+var _hoisted_5 = {
+  "class": "grid md:grid-cols-3 lg:grid-cols-4 gap-6 mt-3"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["StoreLayout"], {
     title: "Dashboard"
@@ -30122,13 +30496,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)('Lihat semua')
         }, null, 8
         /* PROPS */
-        , ["href", "textContent"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" End Heading "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Products "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(category.products, function (product, prod) {
-          return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("ol", {
-            key: prod
-          }, _hoisted_6);
+        , ["href", "textContent"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" End Heading "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Products "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(category.products, function (product, p) {
+          return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["ProductCard"], {
+            key: p,
+            product: product,
+            detail: true
+          }, null, 8
+          /* PROPS */
+          , ["product"]);
         }), 128
         /* KEYED_FRAGMENT */
-        )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" End Products ")])]);
+        ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" End Products ")])]);
       }), 128
       /* KEYED_FRAGMENT */
       )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" End loop ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" End Content ")];
