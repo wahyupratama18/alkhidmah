@@ -48,6 +48,16 @@ class UserFactory extends Factory
     }
 
     /**
+     * Inidicate that this user is an administrator
+     *
+     * @return Factory
+     */
+    public function administrator(): Factory
+    {
+        return $this->state(fn (array $attributes) => ['is_admin' => 1]);
+    }
+
+    /**
      * Indicate that the user should have a personal team.
      *
      * @return $this
